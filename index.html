@@ -355,16 +355,7 @@
 </script>
   
 <script>
-// Create an object for the new data
-const newEntry = {
-    name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved, 
-    canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
-};
-</script>
-
-
-<script>
-    // Collect form data and append it to the URL as query parameters
+    // Collect form data and send it to Google Sheets via Apps Script
     document.getElementById("scoutingForm").onsubmit = function(event) {
         event.preventDefault(); // Prevent form submission
 
@@ -384,14 +375,28 @@ const newEntry = {
         const coralRP = document.querySelector('input[name="coralRP"]:checked').value;
         const message = document.getElementById("message").value;
 
-        // Build query string from the data
-        const queryString = new URLSearchParams({
+        // Create an object for the new data
+        const formData = {
             name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved, 
             canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
-        }).toString();
+        };
 
-        // Redirect to the same page with the query string
-        window.location.href = window.location.pathname + "?" + queryString;
+        // Send the data to Google Sheets via Google Apps Script Web App
+        fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert('Data saved successfully');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error saving the data');
+        });
     };
 </script>
 
