@@ -32,18 +32,23 @@
 
 <form id="scoutingForm">
     <div class="form-container">
-        <label for="name">What is your name:</label>
+        <label for="name">What is your first name:</label>
         <input type="text" id="name" name="name" required><br><br>
     </div>
 
     <div class="form-container">
+        <label for="lastName">What is your last name:</label>
+        <input type="text" id="lastName" name="lastName" required><br><br>
+    </div>
+
+    <div class="form-container">
         <label for="matchNumber">Match Number:</label>
-        <input type="number" id="matchNumber" name="matchNumber" min="0" max="999" required><br><br>
+        <input type="number" id="matchNumber" name="matchNumber" min="0" max="100" required><br><br>
     </div>
 
     <div class="form-container">
         <label for="teamNumber">Team Number:</label>
-        <input type="number" id="teamNumber" name="teamNumber" min="0" max="99999" required><br><br>
+        <input type="number" id="teamNumber" name="teamNumber" min="0" max="100" required><br><br>
     </div>
 
     <div class="form-container">
@@ -55,7 +60,6 @@
             <input type="radio" id="red" name="teamColor" value="Red" required> Red
         </label><br><br>
     </div>
-    
 
     <h1>Auto</h1>
 
@@ -77,7 +81,6 @@
         </label><br><br>
     </div>
 
-
     <div class="form-container">
         <label for="passAutoLine">Pass Auto Line for ranking point:</label><br>
         <label>
@@ -87,8 +90,8 @@
             <input type="radio" id="no" name="passAutoLine" value="No" required> No
         </label><br><br>
     </div>
-    
-<h2>TeleOp</h2>
+
+    <h2>TeleOp</h2>
 
     <div class="form-container">
         <label>Coral level scored on:</label><br>
@@ -108,59 +111,38 @@
         </label><br><br>
     </div>
 
-
-
     <div class="form-container">
         <label for="algaeRemoved">Algae Removed:</label><br>
-        <input type="number" id="algaeRemoved" name="algaeRemoved" min="0"  max="6"required><br><br>
-        <label for="algaescoredinnet">Algae scored in net:</label><br>
-        <input type="number" id="algaescoredinnet" name="algaescoredinnet" min="0"  max="9" required><br><br>
-        <label for="algaeInProcessor">Algae scored in processor:</label><br>
-        <input type="number" id="algaeInProcessor" name="algaeInProcessor" min="0" max="9" required><br><br>
+        <input type="number" id="algaeRemoved" name="algaeRemoved" min="0" required><br><br>
     </div>
 
-    
-    
     <div class="form-container">
         <label>Can move algae:</label><br>
-        <label> 
-        <input type="radio" id="Yes" name="canMoveAlgae" value="Yes"> Yes
-        </label><br>
-        <label> 
-        <input type="radio" id="No" name="canMoveAlgae" value="No"> No
-        </label><br><br>
-    </div>
-
-    <div class="form-container">
-        <label>How do they get game pieces:</label><br>
         <label>
-            <input type="checkbox" id="source" name="algaeNet" value="Source"> Source
+            <input type="radio" id="Yes" name="canMoveAlgae" value="Yes"> Yes
         </label><br>
         <label>
-            <input type="checkbox" id="ground" name="algaeNet" value="Ground"> Ground
-        </label><br>
-        <input type="checkbox" id="None" name="algaeNet" value="None"> None
+            <input type="radio" id="No" name="canMoveAlgae" value="No"> No
         </label><br><br>
     </div>
 
     <h1>End</h1>
 
-        <div class="form-container">
-            <label>Climb:</label><br>
-            <label>
-                <input type="radio" id="park" name="climb" value="Park"> Park
-            </label><br>
-            <label>
-                <input type="radio" id="shallowCage" name="climb" value="Shallow Cage"> Shallow Cage
-            </label><br>
-            <label>
-                <input type="radio" id="deepCage" name="climb" value="Deep Cage"> Deep Cage
-            </label><br>
-            <label>
-                <input type="radio" id="None" name="climb" value="None"> None
-            </label><br><br>
-        </div>
-        
+    <div class="form-container">
+        <label>Climb:</label><br>
+        <label>
+            <input type="radio" id="park" name="climb" value="Park"> Park
+        </label><br>
+        <label>
+            <input type="radio" id="shallowCage" name="climb" value="Shallow Cage"> Shallow Cage
+        </label><br>
+        <label>
+            <input type="radio" id="deepCage" name="climb" value="Deep Cage"> Deep Cage
+        </label><br>
+        <label>
+            <input type="radio" id="None" name="climb" value="None"> None
+        </label><br><br>
+    </div>
 
     <h1>Outcome</h1>
 
@@ -186,8 +168,6 @@
             <input type="radio" name="cooperationPoint" value="No"> No
         </label><br><br>
     </div>
-
-
 
     <div class="form-container">
         <label>Barge RP Scored:</label><br>
@@ -228,7 +208,6 @@
     <input type="number" id="matchFilter" onkeyup="filterTable()"><br><br>
 </div>
 
-
 <table id="resultsTable">
     <thead>
         <tr>
@@ -253,150 +232,104 @@
     </tbody>
 </table>
 
-
-
 <script>
-    // On page load, check if there's saved data in localStorage and populate the table
-    window.onload = function() {
-        const savedData = JSON.parse(localStorage.getItem("surveyResults"));
-        if (savedData) {
-            const table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-            savedData.forEach(data => {
-                const newRow = table.insertRow();
-                newRow.innerHTML = `
-                    <td>${data.name}</td>
-                    <td>${data.matchNumber}</td>
-                    <td>${data.teamNumber}</td>
-                    <td>${data.teamColor}</td>
-                    <td>${data.coralLevel}</td>
-                    <td>${data.passAutoLine}</td>
-                    <td>${data.algaeRemoved}</td>
-                    <td>${data.canMoveAlgae}</td>
-                    <td>${data.climb}</td>
-                    <td>${data.outcome}</td>
-                    <td>${data.cooperationPoint}</td>
-                    <td>${data.bargeRP}</td>
-                    <td>${data.coralRP}</td>
-                    <td>${data.message}</td>
-                `;
-            });
-        }
-    };
-
-    // Collect form data and insert it into the table
-    document.getElementById("scoutingForm").onsubmit = function(event) {
-        event.preventDefault(); // Prevent form submission
-
-        const name = document.getElementById("name").value;
-        const matchNumber = document.getElementById("matchNumber").value;
-        const teamNumber = document.getElementById("teamNumber").value;
-        const teamColor = document.querySelector('input[name="teamColor"]:checked').value;
-        const coralLevel = Array.from(document.querySelectorAll('input[name="coralLevel"]:checked')).map(input => input.value).join(", ");
-        const passAutoLine = document.querySelector('input[name="passAutoLine"]:checked').value;
-        const algaeRemoved = document.getElementById("algaeRemoved").value;
-        const canMoveAlgae = document.querySelector('input[name="canMoveAlgae"]:checked').value;
-        const climb = document.querySelector('input[name="climb"]:checked').value;
-        const outcome = document.querySelector('input[name="outcome"]:checked').value;
-        const cooperationPoint = document.querySelector('input[name="cooperationPoint"]:checked').value;
-        const bargeRP = document.querySelector('input[name="bargeRP"]:checked').value;
-        const coralRP = document.querySelector('input[name="coralRP"]:checked').value;
-        const message = document.getElementById("message").value;
-
-        // Create an object for the new data
-        const newEntry = {
-            name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved, 
-            canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
-        };
-
-        // Insert the new row into the table
+// On page load, check if there's saved data in localStorage and populate the table
+window.onload = function() {
+    const savedData = JSON.parse(localStorage.getItem("surveyResults"));
+    if (savedData) {
         const table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow();
-        newRow.innerHTML = `
-            <td>${name}</td>
-            <td>${matchNumber}</td>
-            <td>${teamNumber}</td>
-            <td>${teamColor}</td>
-            <td>${coralLevel}</td>
-            <td>${passAutoLine}</td>
-            <td>${algaeRemoved}</td>
-            <td>${canMoveAlgae}</td>
-            <td>${climb}</td>
-            <td>${outcome}</td>
-            <td>${cooperationPoint}</td>
-            <td>${bargeRP}</td>
-            <td>${coralRP}</td>
-            <td>${message}</td>
-        `;
+        savedData.forEach(data => {
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${data.name}</td>
+                <td>${data.matchNumber}</td>
+                <td>${data.teamNumber}</td>
+                <td>${data.teamColor}</td>
+                <td>${data.coralLevel}</td>
+                <td>${data.passAutoLine}</td>
+                <td>${data.algaeRemoved}</td>
+                <td>${data.canMoveAlgae}</td>
+                <td>${data.climb}</td>
+                <td>${data.outcome}</td>
+                <td>${data.cooperationPoint}</td>
+                <td>${data.bargeRP}</td>
+                <td>${data.coralRP}</td>
+                <td>${data.message}</td>
+            `;
+        });
+    }
+};
 
-        // Save the new data to localStorage
-        const allData = JSON.parse(localStorage.getItem("surveyResults")) || [];
-        allData.push(newEntry);
-        localStorage.setItem("surveyResults", JSON.stringify(allData));
+// Collect form data and insert it into the table
+document.getElementById("scoutingForm").onsubmit = function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    const name = document.getElementById("name").value;
+    const lastName = document.getElementById("lastName").value;
+    const matchNumber = document.getElementById("matchNumber").value;
+    const teamNumber = document.getElementById("teamNumber").value;
+    const teamColor = document.querySelector('input[name="teamColor"]:checked').value;
+    const coralLevel = Array.from(document.querySelectorAll('input[name="coralLevel"]:checked')).map(input => input.value).join(", ");
+    const passAutoLine = document.querySelector('input[name="passAutoLine"]:checked').value;
+    const algaeRemoved = document.getElementById("algaeRemoved").value;
+    const canMoveAlgae = document.querySelector('input[name="canMoveAlgae"]:checked').value;
+    const climb = document.querySelector('input[name="climb"]:checked').value;
+    const outcome = document.querySelector('input[name="outcome"]:checked').value;
+    const cooperationPoint = document.querySelector('input[name="cooperationPoint"]:checked').value;
+    const bargeRP = document.querySelector('input[name="bargeRP"]:checked').value;
+    const coralRP = document.querySelector('input[name="coralRP"]:checked').value;
+    const message = document.getElementById("message").value;
+
+    // Create an object for the new data
+    const newEntry = {
+        name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved,
+        canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
     };
 
-    // Filter the table based on team number and match number
-    function filterTable() {
-        const teamFilter = document.getElementById("teamFilter").value.toLowerCase();
-        const matchFilter = document.getElementById("matchFilter").value.toLowerCase();
-        const rows = document.getElementById("resultsTable").getElementsByTagName("tr");
+    // Insert the new row into the table
+    const table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+    newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${matchNumber}</td>
+        <td>${teamNumber}</td>
+        <td>${teamColor}</td>
+        <td>${coralLevel}</td>
+        <td>${passAutoLine}</td>
+        <td>${algaeRemoved}</td>
+        <td>${canMoveAlgae}</td>
+        <td>${climb}</td>
+        <td>${outcome}</td>
+        <td>${cooperationPoint}</td>
+        <td>${bargeRP}</td>
+        <td>${coralRP}</td>
+        <td>${message}</td>
+    `;
 
-        for (let i = 1; i < rows.length; i++) {
-            const cells = rows[i].getElementsByTagName("td");
-            const teamNumber = cells[2].textContent.toLowerCase();
-            const matchNumber = cells[1].textContent.toLowerCase();
+    // Save the new data to localStorage
+    const allData = JSON.parse(localStorage.getItem("surveyResults")) || [];
+    allData.push(newEntry);
+    localStorage.setItem("surveyResults", JSON.stringify(allData));
+};
 
-            if (teamNumber.includes(teamFilter) && matchNumber.includes(matchFilter)) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
+// Filter the table based on team number and match number
+function filterTable() {
+    const teamFilter = document.getElementById("teamFilter").value.toLowerCase();
+    const matchFilter = document.getElementById("matchFilter").value.toLowerCase();
+    const rows = document.getElementById("resultsTable").getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].getElementsByTagName("td");
+        const teamNumber = cells[2].textContent.toLowerCase();
+        const matchNumber = cells[1].textContent.toLowerCase();
+
+        if (teamNumber.includes(teamFilter) && matchNumber.includes(matchFilter)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
         }
     }
+}
 </script>
-  
-<script>
-    // Collect form data and send it to Google Sheets via Apps Script
-    document.getElementById("scoutingForm").onsubmit = function(event) {
-        event.preventDefault(); // Prevent form submission
-
-        // Collect the data
-        const name = document.getElementById("name").value;
-        const matchNumber = document.getElementById("matchNumber").value;
-        const teamNumber = document.getElementById("teamNumber").value;
-        const teamColor = document.querySelector('input[name="teamColor"]:checked').value;
-        const coralLevel = Array.from(document.querySelectorAll('input[name="coralLevel"]:checked')).map(input => input.value).join(", ");
-        const passAutoLine = document.querySelector('input[name="passAutoLine"]:checked').value;
-        const algaeRemoved = document.getElementById("algaeRemoved").value;
-        const canMoveAlgae = document.querySelector('input[name="canMoveAlgae"]:checked').value;
-        const climb = document.querySelector('input[name="climb"]:checked').value;
-        const outcome = document.querySelector('input[name="outcome"]:checked').value;
-        const cooperationPoint = document.querySelector('input[name="cooperationPoint"]:checked').value;
-        const bargeRP = document.querySelector('input[name="bargeRP"]:checked').value;
-        const coralRP = document.querySelector('input[name="coralRP"]:checked').value;
-        const message = document.getElementById("message").value;
-
-        // Create an object for the new data
-        const formData = {
-            name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved, 
-            canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
-        };
-
-        // Send the data to Google Sheets via Google Apps Script Web App
-        fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert('Data saved successfully');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error saving the data');
-        });
-    };
-</script>
-
+</body>
+</html>
