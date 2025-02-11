@@ -362,3 +362,36 @@ const newEntry = {
 };
 </script>
 
+
+<script>
+    // Collect form data and append it to the URL as query parameters
+    document.getElementById("scoutingForm").onsubmit = function(event) {
+        event.preventDefault(); // Prevent form submission
+
+        // Collect the data
+        const name = document.getElementById("name").value;
+        const matchNumber = document.getElementById("matchNumber").value;
+        const teamNumber = document.getElementById("teamNumber").value;
+        const teamColor = document.querySelector('input[name="teamColor"]:checked').value;
+        const coralLevel = Array.from(document.querySelectorAll('input[name="coralLevel"]:checked')).map(input => input.value).join(", ");
+        const passAutoLine = document.querySelector('input[name="passAutoLine"]:checked').value;
+        const algaeRemoved = document.getElementById("algaeRemoved").value;
+        const canMoveAlgae = document.querySelector('input[name="canMoveAlgae"]:checked').value;
+        const climb = document.querySelector('input[name="climb"]:checked').value;
+        const outcome = document.querySelector('input[name="outcome"]:checked').value;
+        const cooperationPoint = document.querySelector('input[name="cooperationPoint"]:checked').value;
+        const bargeRP = document.querySelector('input[name="bargeRP"]:checked').value;
+        const coralRP = document.querySelector('input[name="coralRP"]:checked').value;
+        const message = document.getElementById("message").value;
+
+        // Build query string from the data
+        const queryString = new URLSearchParams({
+            name, matchNumber, teamNumber, teamColor, coralLevel, passAutoLine, algaeRemoved, 
+            canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
+        }).toString();
+
+        // Redirect to the same page with the query string
+        window.location.href = window.location.pathname + "?" + queryString;
+    };
+</script>
+
