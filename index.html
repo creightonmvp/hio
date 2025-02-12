@@ -233,12 +233,16 @@
 </table>
 
 <script>
-// On page load, check if there's saved data in localStorage and populate the table
+// On page load, check if there's saved data in the URL
 window.onload = function() {
-    const savedData = JSON.parse(localStorage.getItem("surveyResults"));
-    if (savedData) {
+    const queryParams = new URLSearchParams(window.location.search);
+    const resultData = queryParams.get('surveyData');
+
+    if (resultData) {
+        const parsedData = JSON.parse(decodeURIComponent(resultData));
         const table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
-        savedData.forEach(data => {
+        
+        parsedData.forEach(data => {
             const newRow = table.insertRow();
             newRow.innerHTML = `
                 <td>${data.name}</td>
@@ -260,7 +264,7 @@ window.onload = function() {
     }
 };
 
-// Collect form data and insert it into the table
+// Collect form data and append it to the URL
 document.getElementById("scoutingForm").onsubmit = function(event) {
     event.preventDefault(); // Prevent form submission
 
@@ -286,6 +290,18 @@ document.getElementById("scoutingForm").onsubmit = function(event) {
         canMoveAlgae, climb, outcome, cooperationPoint, bargeRP, coralRP, message
     };
 
+    // Get the existing data from the URL or create a new array
+    const queryParams = new URLSearchParams(window.location.search);
+    let surveyData = queryParams.get('surveyData');
+    surveyData = surveyData ? JSON.parse(decodeURIComponent(surveyData)) : [];
+
+    // Add the new entry to the survey data array
+    surveyData.push(newEntry);
+
+    // Update the URL with the new data
+    queryParams.set('surveyData', encodeURIComponent(JSON.stringify(surveyData)));
+    window.history.replaceState({}, "", `${window.location.pathname}?${queryParams}`);
+    
     // Insert the new row into the table
     const table = document.getElementById("resultsTable").getElementsByTagName('tbody')[0];
     const newRow = table.insertRow();
@@ -305,31 +321,7 @@ document.getElementById("scoutingForm").onsubmit = function(event) {
         <td>${coralRP}</td>
         <td>${message}</td>
     `;
-
-    // Save the new data to localStorage
-    const allData = JSON.parse(localStorage.getItem("surveyResults")) || [];
-    allData.push(newEntry);
-    localStorage.setItem("surveyResults", JSON.stringify(allData));
 };
-
-// Filter the table based on team number and match number
-function filterTable() {
-    const teamFilter = document.getElementById("teamFilter").value.toLowerCase();
-    const matchFilter = document.getElementById("matchFilter").value.toLowerCase();
-    const rows = document.getElementById("resultsTable").getElementsByTagName("tr");
-
-    for (let i = 1; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName("td");
-        const teamNumber = cells[2].textContent.toLowerCase();
-        const matchNumber = cells[1].textContent.toLowerCase();
-
-        if (teamNumber.includes(teamFilter) && matchNumber.includes(matchFilter)) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }
-    }
-}
 </script>
 </body>
 </html>
